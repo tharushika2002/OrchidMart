@@ -13,14 +13,8 @@ from dotenv import load_dotenv
 # Build paths inside the project like this:
 # BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# ============================================================
-# LOAD ENVIRONMENT VARIABLES
-# ============================================================
-
-load_dotenv(BASE_DIR / '.env')
-
+ENV_FILE = BASE_DIR / '.env'
+load_dotenv(ENV_FILE)
 
 # ============================================================
 # SECURITY
@@ -43,9 +37,9 @@ ALLOWED_HOSTS = os.getenv(
 # SUPABASE
 # ============================================================
 
-SUPABASE_URL = os.getenv('https://aowzzakkkdidpbvhexfr.supabase.co')
+SUPABASE_URL = os.getenv('SUPABASE_URL')
 
-SUPABASE_SERVICE_KEY = os.getenv('sb_secret_Mt56JohNzQHbE9TnDLBzuw_KN6I5rAi')
+SUPABASE_SERVICE_KEY = os.getenv('SUPABASE_SERVICE_KEY')
 
 SUPABASE_BUCKET = 'orchid-images'
 

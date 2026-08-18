@@ -2,11 +2,22 @@ from django.db import models
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    description = models.TextField(blank=True)
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    description = models.TextField(
+        blank=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -29,7 +40,10 @@ class Orchid(models.Model):
         related_name="orchids",
     )
 
-    name = models.CharField(max_length=200)
+    name = models.CharField(
+        max_length=200,
+    )
+
     description = models.TextField()
 
     price = models.DecimalField(
@@ -37,7 +51,9 @@ class Orchid(models.Model):
         decimal_places=2,
     )
 
-    stock_quantity = models.PositiveIntegerField(default=0)
+    stock_quantity = models.PositiveIntegerField(
+        default=0,
+    )
 
     size = models.CharField(
         max_length=50,
@@ -65,8 +81,13 @@ class Orchid(models.Model):
         default=Status.AVAILABLE,
     )
 
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
 
     class Meta:
         ordering = ["-created_at"]
@@ -76,6 +97,7 @@ class Orchid(models.Model):
 
 
 class OrchidImage(models.Model):
+
     orchid = models.ForeignKey(
         Orchid,
         on_delete=models.CASCADE,
@@ -84,12 +106,19 @@ class OrchidImage(models.Model):
 
     image_url = models.URLField()
 
-    is_primary = models.BooleanField(default=False)
+    is_primary = models.BooleanField(
+        default=False,
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
 
     class Meta:
-        ordering = ["-is_primary", "-created_at"]
+        ordering = [
+            "-is_primary",
+            "-created_at",
+        ]
 
     def __str__(self):
         return f"{self.orchid.name} Image"

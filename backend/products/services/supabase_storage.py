@@ -24,18 +24,20 @@ def upload_orchid_image(image_file):
 
     file_content = image_file.read()
 
-    supabase.storage \
-        .from_(settings.SUPABASE_BUCKET) \
-        .upload(
-            file_path,
-            file_content,
-            {
-                "content-type": image_file.content_type,
-            },
-        )
+    supabase.storage.from_(
+        settings.SUPABASE_BUCKET
+    ).upload(
+        file_path,
+        file_content,
+        {
+            "content-type": image_file.content_type,
+            "cache-control": "3600",
+            "upsert": "false",
+        },
+    )
 
-    public_url = supabase.storage \
-        .from_(settings.SUPABASE_BUCKET) \
-        .get_public_url(file_path)
+    public_url = supabase.storage.from_(
+        settings.SUPABASE_BUCKET
+    ).get_public_url(file_path)
 
     return public_url
