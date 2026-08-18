@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Orchid
+from .models import Category, Orchid, OrchidImage
 
 
 @admin.register(Category)
@@ -27,4 +27,16 @@ class OrchidAdmin(admin.ModelAdmin):
     search_fields = (
         "name",
         "description",
+    )
+
+@admin.register(OrchidImage)
+class OrchidImageAdmin(admin.ModelAdmin):
+    list_display = (
+        "orchid",
+        "is_primary",
+        "created_at",
+    )
+
+    list_filter = (
+        "is_primary",
     )

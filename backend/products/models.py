@@ -73,3 +73,23 @@ class Orchid(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class OrchidImage(models.Model):
+    orchid = models.ForeignKey(
+        Orchid,
+        on_delete=models.CASCADE,
+        related_name="images",
+    )
+
+    image_url = models.URLField()
+
+    is_primary = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-is_primary", "-created_at"]
+
+    def __str__(self):
+        return f"{self.orchid.name} Image"
