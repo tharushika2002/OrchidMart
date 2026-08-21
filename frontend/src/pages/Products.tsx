@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import api from "../services/api";
 import type { Product } from "../types/product";
 
+import "../App.css";
+
 
 function Products() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -42,30 +44,56 @@ function Products() {
     }
 
     return (
-        <div>
+        <div className="products-page">
             <h1>Our Orchids</h1>
 
-            {products.map((product) => (
-                <div key={product.id}>
-                    <h2>{product.name}</h2>
+            <div className="products-grid">
+                {products.map((product) => (
+                    <div
+                        className="product-card"
+                        key={product.id}
+                    >
+                        <div className="product-image">
+                            {product.primary_image ? (
+                                <img
+                                    src={product.primary_image}
+                                    alt={product.name}
+                                />
+                            ) : (
+                                <div className="no-image">
+                                    No Image
+                                </div>
+                            )}
+                        </div>
 
-                    <p>
-                        Category: {product.category_name}
-                    </p>
+                        <div className="product-info">
+                            <span className="product-category">
+                                {product.category_name}
+                            </span>
 
-                    <p>
-                        Price: Rs. {product.price}
-                    </p>
+                            <h2>{product.name}</h2>
 
-                    <p>
-                        Stock: {product.stock_quantity}
-                    </p>
+                            <p className="product-description">
+                                {product.description}
+                            </p>
 
-                    <p>
-                        {product.description}
-                    </p>
-                </div>
-            ))}
+                            <div className="product-bottom">
+                                <span className="product-price">
+                                    Rs. {product.price}
+                                </span>
+
+                                <span className="product-stock">
+                                    Stock: {product.stock_quantity}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {products.length === 0 && (
+                <p>No orchids available.</p>
+            )}
         </div>
     );
 }
