@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import api from "../services/api";
 import type { Product } from "../types/product";
-
+import { Link } from "react-router-dom";
 import "../App.css";
 
 
@@ -78,13 +78,24 @@ function Products() {
                             </p>
 
                             <div className="product-bottom">
-                                <span className="product-price">
-                                    Rs. {product.price}
-                                </span>
 
-                                <span className="product-stock">
-                                    Stock: {product.stock_quantity}
-                                </span>
+                                <div>
+                                    <span className="product-price">
+                                        Rs. {product.price}
+                                    </span>
+
+                                    <span className="product-stock">
+                                        Stock: {product.stock_quantity}
+                                    </span>
+                                </div>
+
+                                <Link
+                                    to={`/products/${product.id}`}
+                                    className="view-details-button"
+                                >
+                                    View Details
+                                </Link>
+
                             </div>
                         </div>
                     </div>
