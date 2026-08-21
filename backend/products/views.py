@@ -122,23 +122,40 @@ class OrchidImageUploadView(APIView):
         # Validate Image Type
         # ----------------------------------------------------
 
-        allowed_types = [
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-        ]
+# ----------------------------------------------------
+# Validate Image Type
+# ----------------------------------------------------
 
-        if image.content_type not in allowed_types:
+            allowed_extensions = [
+                ".jpg",
+                ".jpeg",
+                ".png",
+                ".webp",
+            ]
 
-            return Response(
-                {
-                    "detail": (
-                        "Only JPG, PNG and WEBP "
-                        "images are allowed."
-                    )
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            allowed_types = [
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+            ]
+
+            file_name = image.name.lower()
+            file_extension = "." + file_name.split(".")[-1]
+
+            if (
+                file_extension not in allowed_extensions
+                and image.content_type not in allowed_types
+            ):
+
+                return Response(
+                    {
+                        "detail": (
+                            "Only JPG, JPEG, PNG and WEBP "
+                            "images are allowed."
+                        )
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
         # ----------------------------------------------------
         # Validate Image Size
