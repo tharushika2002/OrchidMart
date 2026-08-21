@@ -27,6 +27,8 @@ export interface Product {
 
     images?: ProductImage[];
 
+    primary_image: string | null;
+
     created_at: string;
     updated_at: string;
 }
