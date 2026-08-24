@@ -7,6 +7,7 @@ import {
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
 
 import { CartProvider } from "./context/CartContext";
 
@@ -38,6 +39,11 @@ function App() {
                     <Route
                         path="/cart"
                         element={<Cart />}
+                    />
+
+                    <Route
+                        path="/checkout"
+                        element={<Checkout />}
                     />
 
                 </Routes>
