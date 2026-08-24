@@ -276,11 +276,12 @@ function Cart() {
                     </div>
 
 
-                    <button
+                    <Link
+                        to="/checkout"
                         className="checkout-button"
                     >
                         Proceed to Checkout
-                    </button>
+                    </Link>
 
 
                     <Link
