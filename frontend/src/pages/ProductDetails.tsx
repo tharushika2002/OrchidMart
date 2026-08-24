@@ -136,7 +136,7 @@ function ProductDetails() {
 
 
                     <div className="details-price">
-                        Rs. {product.price}
+                        Rs. {Number(product.price).toLocaleString()}
                     </div>
 
 
