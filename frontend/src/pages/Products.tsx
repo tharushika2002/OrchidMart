@@ -166,31 +166,23 @@ function Products() {
 
                                 <div className="product-bottom">
 
-                                    <div className="product-meta">
+                                    <div className="product-price-area">
 
                                         <span className="product-price">
-                                            Rs. {product.price}
+                                            Rs. {Number(product.price).toLocaleString()}
                                         </span>
 
                                         <span className="product-stock">
-                                            {product.stock_quantity > 0
-                                                ? `${product.stock_quantity} available`
-                                                : "Out of Stock"}
+                                            {product.stock_quantity} available
                                         </span>
 
                                     </div>
-
-
-                                    {/* VIEW DETAILS */}
 
                                     <Link
                                         to={`/products/${product.id}`}
                                         className="view-details-button"
                                     >
-                                        View Details
-                                        <span className="view-arrow">
-                                            →
-                                        </span>
+                                        View Details →
                                     </Link>
 
                                 </div>
