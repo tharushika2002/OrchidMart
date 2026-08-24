@@ -86,7 +86,6 @@ function Checkout() {
 
         event.preventDefault();
 
-
         setLoading(true);
 
         setError("");
@@ -102,7 +101,6 @@ function Checkout() {
 
                 ...formData,
 
-
                 items: cartItems.map((item) => ({
 
                     product_id: item.product.id,
@@ -114,16 +112,19 @@ function Checkout() {
             };
 
 
+            console.log(
+                "ORDER DATA:",
+                orderData
+            );
+
+
             // =============================================
             // SEND ORDER TO DJANGO
             // =============================================
 
             const response = await api.post(
-
                 "/orders/create/",
-
                 orderData
-
             );
 
 
@@ -134,10 +135,10 @@ function Checkout() {
 
 
             // =============================================
-            // GET ORDER ID
+            // GET CREATED ORDER
             // =============================================
 
-            const orderId = response.data.order.id;
+            const order = response.data.order;
 
 
             // =============================================
@@ -148,19 +149,17 @@ function Checkout() {
 
 
             // =============================================
-            // SUCCESS
+            // GO TO SUCCESS PAGE
             // =============================================
 
-            alert(
-                `Order #${orderId} created successfully!`
+            navigate(
+                "/order-success",
+                {
+                    state: {
+                        order: order,
+                    },
+                }
             );
-
-
-            // =============================================
-            // TEMPORARY REDIRECT
-            // =============================================
-
-            navigate("/products");
 
 
         } catch (err: any) {
@@ -227,9 +226,11 @@ function Checkout() {
                         Your Cart is Empty 🛒
                     </h1>
 
+
                     <p>
                         Please add some orchids before checking out.
                     </p>
+
 
                     <Link
                         to="/products"
@@ -782,8 +783,7 @@ function Checkout() {
                                             (
                                                 Number(
                                                     item.product.price
-                                                )
-                                                *
+                                                ) *
                                                 item.quantity
                                             ).toLocaleString()
 
