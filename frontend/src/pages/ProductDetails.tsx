@@ -5,6 +5,7 @@ import api from "../services/api";
 import type { Product } from "../types/product";
 
 import "../App.css";
+import { useCart } from "../context/CartContext";
 
 
 function ProductDetails() {
@@ -13,6 +14,7 @@ function ProductDetails() {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const { addToCart } = useCart();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -75,6 +77,7 @@ function ProductDetails() {
         );
     }
 
+    
 
     return (
         <div className="product-details-page">
@@ -215,6 +218,7 @@ function ProductDetails() {
                     <button
                         className="add-to-cart-button"
                         disabled={product.stock_quantity === 0}
+                        onClick={() => addToCart(product)}
                     >
                         {product.stock_quantity > 0
                             ? "Add to Cart"
