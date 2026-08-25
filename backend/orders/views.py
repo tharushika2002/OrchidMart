@@ -260,3 +260,66 @@ class OrderDetailView(RetrieveAPIView):
     serializer_class = OrderSerializer
 
     queryset = Order.objects.all()
+
+class OrderStatusUpdateView(APIView):
+
+    def patch(self, request, pk):
+
+        try:
+
+            order = Order.objects.get(
+                pk=pk
+            )
+
+        except Order.DoesNotExist:
+
+            return Response(
+                {
+                    "error": "Order not found"
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+
+        new_status = request.data.get(
+            "status"
+        )
+
+
+        allowed_statuses = [
+
+            "PENDING",
+
+            "CONFIRMED",
+
+            "PROCESSING",
+
+            "SHIPPED",
+
+            "DELIVERED",
+
+            "CANCELLED",
+
+        ]
+
+
+        if new_status not in allowed_statuses:
+
+            return Response(
+                {
+                    "error":
+                    "Invalid order status"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+        order.status = new_status
+
+        order.save()
+
+
+        return Response(
+            OrderSerializer(order).data,
+            status=status.HTTP_200_OK
+        )
