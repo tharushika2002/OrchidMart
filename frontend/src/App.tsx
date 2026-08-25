@@ -9,75 +9,120 @@ import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import AdminOrders from "./pages/AdminOrders";
-import { CartProvider } from "./context/CartContext";
 import OrderSuccess from "./pages/OrderSuccess";
 import MyOrders from "./pages/MyOrders";
 import OrderDetails from "./pages/OrderDetails";
+
 import Navbar from "./components/Navbar";
+
+import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
+
 
 function App() {
 
     return (
-        <CartProvider>
 
-            <BrowserRouter>
+        <AuthProvider>
+
+            <CartProvider>
+
+                <BrowserRouter>
+
+                    {/* =================================================
+                        NAVBAR
+                    ================================================= */}
+
+                    <Navbar />
 
 
-                <Navbar />
-                
-                <Routes>
+                    {/* =================================================
+                        ROUTES
+                    ================================================= */}
 
-                    <Route
-                        path="/"
-                        element={<Products />}
-                    />
+                    <Routes>
 
-                    <Route
-                        path="/products"
-                        element={<Products />}
-                    />
+                        {/* HOME */}
 
-                    <Route
-                        path="/products/:id"
-                        element={<ProductDetails />}
-                    />
+                        <Route
+                            path="/"
+                            element={<Products />}
+                        />
 
-                    <Route
-                        path="/cart"
-                        element={<Cart />}
-                    />
 
-                    <Route
-                        path="/checkout"
-                        element={<Checkout />}
-                    />
+                        {/* PRODUCTS */}
 
-                    <Route
-                        path="/order-success"
-                        element={<OrderSuccess />}
-                    />
+                        <Route
+                            path="/products"
+                            element={<Products />}
+                        />
 
-                    <Route
-                        path="/orders"
-                        element={<MyOrders />}
-                    />
 
-                    <Route
-                        path="/orders/:id"
-                        element={<OrderDetails />}
-                    />
+                        {/* PRODUCT DETAILS */}
 
-                    <Route
-                        path="/admin/orders"
-                        element={<AdminOrders />}
-                    />
+                        <Route
+                            path="/products/:id"
+                            element={<ProductDetails />}
+                        />
 
-                </Routes>
 
-            </BrowserRouter>
+                        {/* CART */}
 
-        </CartProvider>
+                        <Route
+                            path="/cart"
+                            element={<Cart />}
+                        />
+
+
+                        {/* CHECKOUT */}
+
+                        <Route
+                            path="/checkout"
+                            element={<Checkout />}
+                        />
+
+
+                        {/* ORDER SUCCESS */}
+
+                        <Route
+                            path="/order-success"
+                            element={<OrderSuccess />}
+                        />
+
+
+                        {/* MY ORDERS */}
+
+                        <Route
+                            path="/orders"
+                            element={<MyOrders />}
+                        />
+
+
+                        {/* ORDER DETAILS */}
+
+                        <Route
+                            path="/orders/:id"
+                            element={<OrderDetails />}
+                        />
+
+
+                        {/* ADMIN ORDERS */}
+
+                        <Route
+                            path="/admin/orders"
+                            element={<AdminOrders />}
+                        />
+
+                    </Routes>
+
+                </BrowserRouter>
+
+            </CartProvider>
+
+        </AuthProvider>
+
     );
+
 }
 
 
