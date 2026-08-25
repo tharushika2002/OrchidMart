@@ -13,7 +13,7 @@ import { CartProvider } from "./context/CartContext";
 import OrderSuccess from "./pages/OrderSuccess";
 import MyOrders from "./pages/MyOrders";
 import OrderDetails from "./pages/OrderDetails";
-
+import Navbar from "./components/Navbar";
 
 function App() {
 
@@ -22,6 +22,9 @@ function App() {
 
             <BrowserRouter>
 
+
+                <Navbar />
+                
                 <Routes>
 
                     <Route

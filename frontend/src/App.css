@@ -4149,3 +4149,516 @@ a {
     }
 
 }
+
+/* =========================================================
+   ORCHIDMART NAVBAR
+========================================================= */
+
+.navbar {
+    width: 100%;
+
+    height: 78px;
+
+    padding: 0 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    background: rgba(255, 255, 255, 0.96);
+
+    border-bottom: 1px solid #e8eee9;
+
+    box-shadow:
+        0 4px 18px rgba(31, 51, 39, 0.05);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+
+    backdrop-filter: blur(12px);
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.navbar-logo {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    text-decoration: none;
+
+    flex-shrink: 0;
+}
+
+
+.navbar-logo-icon {
+    width: 44px;
+
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 13px;
+
+    background: #edf8f0;
+
+    font-size: 23px;
+
+    transition: transform 0.25s ease;
+}
+
+
+.navbar-logo:hover .navbar-logo-icon {
+    transform: rotate(-8deg) scale(1.05);
+}
+
+
+.navbar-logo-text {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.navbar-logo-text strong {
+    color: #24372b;
+
+    font-size: 19px;
+
+    line-height: 1;
+
+    letter-spacing: -0.3px;
+}
+
+
+.navbar-logo-text span {
+    color: #789082;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+}
+
+
+/* =========================================================
+   NAVIGATION LINKS
+========================================================= */
+
+.navbar-links {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-left: auto;
+
+    margin-right: 15px;
+}
+
+
+.navbar-link {
+    position: relative;
+
+    padding: 10px 15px;
+
+    color: #647168;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    border-radius: 8px;
+
+    transition:
+        color 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.navbar-link:hover {
+    color: #2e8b57;
+
+    background: #f3f8f4;
+}
+
+
+.navbar-link.active {
+    color: #2e8b57;
+
+    background: #edf8f0;
+}
+
+
+/* Active underline */
+
+.navbar-link.active::after {
+    content: "";
+
+    position: absolute;
+
+    bottom: 3px;
+
+    left: 50%;
+
+    width: 18px;
+
+    height: 2px;
+
+    border-radius: 10px;
+
+    background: #2e8b57;
+
+    transform: translateX(-50%);
+}
+
+
+/* =========================================================
+   NAVBAR ACTIONS
+========================================================= */
+
+.navbar-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   ICON BUTTON
+========================================================= */
+
+.navbar-icon-button {
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    border: 1px solid #e5ebe7;
+
+    border-radius: 11px;
+
+    background: white;
+
+    font-size: 17px;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.navbar-icon-button:hover {
+    background: #f3f8f4;
+
+    border-color: #cfe1d4;
+
+    transform: translateY(-1px);
+}
+
+
+/* Notification dot */
+
+.notification-dot {
+    width: 7px;
+
+    height: 7px;
+
+    position: absolute;
+
+    top: 8px;
+
+    right: 8px;
+
+    border-radius: 50%;
+
+    background: #e85d75;
+
+    border: 2px solid white;
+}
+
+
+/* =========================================================
+   CART
+========================================================= */
+
+.navbar-cart {
+    width: 42px;
+
+    height: 42px;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: 1px solid #e5ebe7;
+
+    border-radius: 11px;
+
+    background: white;
+
+    text-decoration: none;
+
+    transition: all 0.2s ease;
+}
+
+
+.navbar-cart:hover {
+    background: #f3f8f4;
+
+    border-color: #cfe1d4;
+
+    transform: translateY(-1px);
+}
+
+
+.cart-icon {
+    font-size: 17px;
+
+    line-height: 1;
+}
+
+
+.cart-count {
+    min-width: 18px;
+
+    height: 18px;
+
+    padding: 0 4px;
+
+    position: absolute;
+
+    top: -5px;
+
+    right: -5px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #2e8b57;
+
+    color: white;
+
+    border: 2px solid white;
+
+    font-size: 9px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.navbar-login-button {
+    min-width: 78px;
+
+    height: 40px;
+
+    padding: 0 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #2e8b57;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.navbar-login-button:hover {
+    background: #267548;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 12px rgba(46, 139, 87, 0.2);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .navbar {
+        padding: 0 25px;
+
+        gap: 15px;
+    }
+
+
+    .navbar-links {
+        margin-right: 0;
+    }
+
+
+    .navbar-link {
+        padding: 9px 10px;
+    }
+
+
+    .navbar-logo-text span {
+        display: none;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .navbar {
+        height: 70px;
+
+        padding: 0 16px;
+
+        gap: 10px;
+    }
+
+
+    .navbar-logo-icon {
+        width: 39px;
+
+        height: 39px;
+
+        font-size: 20px;
+
+        border-radius: 11px;
+    }
+
+
+    .navbar-logo-text strong {
+        font-size: 16px;
+    }
+
+
+    .navbar-links {
+        gap: 2px;
+
+        margin-left: auto;
+    }
+
+
+    .navbar-link {
+        padding: 8px;
+
+        font-size: 11px;
+    }
+
+
+    .navbar-link.active::after {
+        display: none;
+    }
+
+
+    .navbar-icon-button,
+    .navbar-cart {
+        width: 36px;
+
+        height: 36px;
+    }
+
+
+    .navbar-login-button {
+        min-width: 60px;
+
+        height: 36px;
+
+        padding: 0 12px;
+
+        font-size: 11px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 500px) {
+
+    .navbar {
+        padding: 0 12px;
+    }
+
+
+    .navbar-logo-text {
+        display: none;
+    }
+
+
+    .navbar-links {
+        display: none;
+    }
+
+
+    .navbar-actions {
+        margin-left: auto;
+    }
+
+}
