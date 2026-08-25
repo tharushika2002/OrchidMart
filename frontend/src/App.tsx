@@ -12,6 +12,7 @@ import Checkout from "./pages/Checkout";
 import { CartProvider } from "./context/CartContext";
 import OrderSuccess from "./pages/OrderSuccess";
 import MyOrders from "./pages/MyOrders";
+import OrderDetails from "./pages/OrderDetails";
 
 
 function App() {
@@ -56,6 +57,11 @@ function App() {
                     <Route
                         path="/orders"
                         element={<MyOrders />}
+                    />
+
+                    <Route
+                        path="/orders/:id"
+                        element={<OrderDetails />}
                     />
 
                 </Routes>
