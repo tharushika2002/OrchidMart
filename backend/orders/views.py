@@ -254,3 +254,9 @@ class OrderListView(ListAPIView):
         return Order.objects.all().order_by(
             "-created_at"
         )
+
+class OrderDetailView(RetrieveAPIView):
+
+    serializer_class = OrderSerializer
+
+    queryset = Order.objects.all()
