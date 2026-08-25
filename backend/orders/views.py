@@ -4,7 +4,7 @@ from django.db import transaction
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from products.models import Orchid
 
 from .models import Order, OrderItem
@@ -242,4 +242,15 @@ class CreateOrderView(APIView):
                 "order": serializer.data,
             },
             status=status.HTTP_201_CREATED,
+        )
+
+
+class OrderListView(ListAPIView):
+
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+
+        return Order.objects.all().order_by(
+            "-created_at"
         )
