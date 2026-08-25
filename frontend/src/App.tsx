@@ -8,7 +8,7 @@ import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-
+import AdminOrders from "./pages/AdminOrders";
 import { CartProvider } from "./context/CartContext";
 import OrderSuccess from "./pages/OrderSuccess";
 import MyOrders from "./pages/MyOrders";
@@ -62,6 +62,11 @@ function App() {
                     <Route
                         path="/orders/:id"
                         element={<OrderDetails />}
+                    />
+
+                    <Route
+                        path="/admin/orders"
+                        element={<AdminOrders />}
                     />
 
                 </Routes>
