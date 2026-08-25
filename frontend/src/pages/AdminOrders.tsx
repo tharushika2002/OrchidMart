@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import api from "../services/api";
 
@@ -7,18 +8,12 @@ import "../App.css";
 
 interface Order {
     id: number;
-
     first_name: string;
     last_name: string;
-
     email: string;
-
     payment_method: string;
-
     status: string;
-
     total: string;
-
     created_at: string;
 }
 
@@ -65,9 +60,7 @@ function AdminOrders() {
 
             setError(
                 err.response?.data
-                    ? JSON.stringify(
-                        err.response.data
-                    )
+                    ? JSON.stringify(err.response.data)
                     : "Failed to load orders."
             );
 
@@ -88,7 +81,7 @@ function AdminOrders() {
 
 
     // =========================================================
-    // UPDATE ORDER STATUS
+    // UPDATE STATUS
     // =========================================================
 
     const updateOrderStatus = async (
@@ -98,9 +91,7 @@ function AdminOrders() {
 
         try {
 
-            setUpdatingOrderId(
-                orderId
-            );
+            setUpdatingOrderId(orderId);
 
 
             const response = await api.patch(
@@ -114,19 +105,15 @@ function AdminOrders() {
             );
 
 
-            setOrders(
-                (currentOrders) =>
+            setOrders((currentOrders) =>
 
-                    currentOrders.map(
-                        (order) =>
+                currentOrders.map((order) =>
 
-                            order.id === orderId
+                    order.id === orderId
+                        ? response.data
+                        : order
 
-                                ? response.data
-
-                                : order
-
-                    )
+                )
 
             );
 
@@ -138,7 +125,6 @@ function AdminOrders() {
                 err
             );
 
-
             alert(
                 err.response?.data?.error
                 ||
@@ -147,13 +133,40 @@ function AdminOrders() {
 
         } finally {
 
-            setUpdatingOrderId(
-                null
-            );
+            setUpdatingOrderId(null);
 
         }
 
     };
+
+
+    // =========================================================
+    // STATISTICS
+    // =========================================================
+
+    const totalOrders =
+        orders.length;
+
+
+    const pendingOrders =
+        orders.filter(
+            (order) =>
+                order.status === "PENDING"
+        ).length;
+
+
+    const processingOrders =
+        orders.filter(
+            (order) =>
+                order.status === "PROCESSING"
+        ).length;
+
+
+    const deliveredOrders =
+        orders.filter(
+            (order) =>
+                order.status === "DELIVERED"
+        ).length;
 
 
     // =========================================================
@@ -169,7 +182,7 @@ function AdminOrders() {
                 <div className="loading-spinner"></div>
 
                 <h2>
-                    Loading orders...
+                    Loading admin dashboard...
                 </h2>
 
             </div>
@@ -197,9 +210,7 @@ function AdminOrders() {
                     {error}
                 </p>
 
-                <button
-                    onClick={fetchOrders}
-                >
+                <button onClick={fetchOrders}>
                     Try Again
                 </button>
 
@@ -210,289 +221,446 @@ function AdminOrders() {
     }
 
 
-    // =========================================================
-    // ADMIN ORDERS PAGE
-    // =========================================================
-
     return (
 
-        <div className="admin-orders-page">
+        <div className="admin-dashboard">
 
 
-            {/* =============================================
-                HEADER
-            ============================================= */}
+            {/* =================================================
+                SIDEBAR
+            ================================================= */}
 
-            <div className="admin-orders-header">
-
-                <div>
-
-                    <span className="admin-label">
-
-                        ADMIN PANEL
-
-                    </span>
+            <aside className="admin-sidebar">
 
 
-                    <h1>
+                <div className="admin-brand">
 
-                        Order Management
+                    <div className="admin-logo">
+                        🌸
+                    </div>
 
-                    </h1>
+                    <div>
 
+                        <h2>
+                            OrchidMart
+                        </h2>
 
-                    <p>
+                        <span>
+                            ADMIN PANEL
+                        </span>
 
-                        Manage and update customer orders.
-
-                    </p>
+                    </div>
 
                 </div>
 
 
-                <div className="admin-order-count">
-
-                    {orders.length}
-
-                    <span>
-                        Total Orders
-                    </span>
-
-                </div>
-
-            </div>
+                <nav className="admin-nav">
 
 
-            {/* =============================================
-                ORDERS TABLE
-            ============================================= */}
+                    <Link
+                        to="/admin/orders"
+                        className="admin-nav-item active"
+                    >
+                        📦
+                        <span>
+                            Orders
+                        </span>
+                    </Link>
 
-            <div className="admin-orders-container">
+
+                    <Link
+                        to="/products"
+                        className="admin-nav-item"
+                    >
+                        🌸
+                        <span>
+                            Products
+                        </span>
+                    </Link>
+
+                </nav>
 
 
-                <div className="admin-table-header">
+                <div className="admin-sidebar-footer">
 
-                    <span>
-                        Order
-                    </span>
-
-                    <span>
-                        Customer
-                    </span>
-
-                    <span>
-                        Date
-                    </span>
-
-                    <span>
-                        Payment
-                    </span>
-
-                    <span>
-                        Total
-                    </span>
-
-                    <span>
-                        Status
-                    </span>
+                    <Link
+                        to="/products"
+                        className="admin-back-shop"
+                    >
+                        ← Back to Store
+                    </Link>
 
                 </div>
 
+            </aside>
 
-                <div className="admin-orders-list">
 
+            {/* =================================================
+                MAIN
+            ================================================= */}
 
-                    {orders.map(
-                        (order) => (
+            <main className="admin-main">
 
-                            <div
-                                className="admin-order-row"
-                                key={order.id}
-                            >
 
+                {/* HEADER */}
 
-                                {/* ORDER */}
+                <div className="admin-top-header">
 
-                                <div className="admin-order-id">
+                    <div>
 
-                                    #{order.id}
+                        <span className="admin-page-label">
+                            OVERVIEW
+                        </span>
 
-                                </div>
+                        <h1>
+                            Order Management
+                        </h1>
 
+                        <p>
+                            Manage customer orders and track their progress.
+                        </p>
 
-                                {/* CUSTOMER */}
+                    </div>
 
-                                <div className="admin-customer">
 
-                                    <strong>
+                    <div className="admin-user">
 
-                                        {order.first_name}
-                                        {" "}
-                                        {order.last_name}
+                        <div className="admin-avatar">
+                            A
+                        </div>
 
-                                    </strong>
+                        <div>
 
+                            <strong>
+                                Administrator
+                            </strong>
 
-                                    <span>
+                            <span>
+                                Admin Account
+                            </span>
 
-                                        {order.email}
+                        </div>
 
-                                    </span>
+                    </div>
 
-                                </div>
+                </div>
 
 
-                                {/* DATE */}
+                {/* =================================================
+                    STATISTICS
+                ================================================= */}
 
-                                <div className="admin-order-date">
+                <section className="admin-stats">
 
-                                    {new Date(
-                                        order.created_at
-                                    ).toLocaleDateString()}
 
-                                </div>
+                    <div className="admin-stat-card">
 
+                        <div className="stat-icon">
+                            📦
+                        </div>
 
-                                {/* PAYMENT */}
+                        <div>
 
-                                <div className="admin-payment">
+                            <span>
+                                Total Orders
+                            </span>
 
-                                    {order.payment_method === "COD"
-                                        ? "Cash on Delivery"
-                                        : "Card Payment"}
+                            <strong>
+                                {totalOrders}
+                            </strong>
 
-                                </div>
+                        </div>
 
+                    </div>
 
-                                {/* TOTAL */}
 
-                                <div className="admin-order-total">
+                    <div className="admin-stat-card">
 
-                                    Rs. {
+                        <div className="stat-icon pending-icon">
+                            ⏳
+                        </div>
 
-                                        Number(
-                                            order.total
-                                        ).toLocaleString()
+                        <div>
 
-                                    }
+                            <span>
+                                Pending
+                            </span>
 
-                                </div>
+                            <strong>
+                                {pendingOrders}
+                            </strong>
 
+                        </div>
 
-                                {/* STATUS */}
+                    </div>
 
-                                <div className="admin-status-control">
 
-                                    <select
+                    <div className="admin-stat-card">
 
-                                        value={
-                                            order.status
-                                        }
+                        <div className="stat-icon processing-icon">
+                            ⚙️
+                        </div>
 
-                                        disabled={
-                                            updatingOrderId ===
-                                            order.id
-                                        }
+                        <div>
 
-                                        onChange={(event) =>
+                            <span>
+                                Processing
+                            </span>
 
-                                            updateOrderStatus(
+                            <strong>
+                                {processingOrders}
+                            </strong>
 
-                                                order.id,
+                        </div>
 
-                                                event.target.value
+                    </div>
 
-                                            )
 
-                                        }
+                    <div className="admin-stat-card">
 
-                                    >
+                        <div className="stat-icon delivered-icon">
+                            ✓
+                        </div>
 
-                                        <option value="PENDING">
+                        <div>
 
-                                            PENDING
+                            <span>
+                                Delivered
+                            </span>
 
-                                        </option>
+                            <strong>
+                                {deliveredOrders}
+                            </strong>
 
+                        </div>
 
-                                        <option value="CONFIRMED">
+                    </div>
 
-                                            CONFIRMED
+                </section>
 
-                                        </option>
 
+                {/* =================================================
+                    ORDERS SECTION
+                ================================================= */}
 
-                                        <option value="PROCESSING">
+                <section className="admin-orders-section">
 
-                                            PROCESSING
 
-                                        </option>
+                    <div className="admin-section-header">
 
+                        <div>
 
-                                        <option value="SHIPPED">
-
-                                            SHIPPED
-
-                                        </option>
-
-
-                                        <option value="DELIVERED">
-
-                                            DELIVERED
-
-                                        </option>
-
-
-                                        <option value="CANCELLED">
-
-                                            CANCELLED
-
-                                        </option>
-
-                                    </select>
-
-
-                                    {updatingOrderId ===
-                                        order.id && (
-
-                                        <span className="updating-text">
-
-                                            Updating...
-
-                                        </span>
-
-                                    )}
-
-                                </div>
-
-                            </div>
-
-                        )
-
-                    )}
-
-
-                    {/* NO ORDERS */}
-
-                    {orders.length === 0 && (
-
-                        <div className="admin-no-orders">
-
-                            <h3>
-                                No orders found
-                            </h3>
+                            <h2>
+                                Recent Orders
+                            </h2>
 
                             <p>
-                                Orders will appear here when customers place them.
+                                Update order status and manage deliveries.
                             </p>
 
                         </div>
 
-                    )}
 
-                </div>
+                        <button
+                            className="admin-refresh-button"
+                            onClick={fetchOrders}
+                        >
+                            ↻ Refresh
+                        </button>
 
-            </div>
+                    </div>
+
+
+                    <div className="admin-orders-container">
+
+
+                        {/* TABLE HEADER */}
+
+                        <div className="admin-table-header">
+
+                            <span>
+                                Order
+                            </span>
+
+                            <span>
+                                Customer
+                            </span>
+
+                            <span>
+                                Date
+                            </span>
+
+                            <span>
+                                Payment
+                            </span>
+
+                            <span>
+                                Total
+                            </span>
+
+                            <span>
+                                Status
+                            </span>
+
+                        </div>
+
+
+                        {/* ORDERS */}
+
+                        <div className="admin-orders-list">
+
+                            {orders.map((order) => (
+
+                                <div
+                                    className="admin-order-row"
+                                    key={order.id}
+                                >
+
+
+                                    <div className="admin-order-id">
+
+                                        #{order.id}
+
+                                    </div>
+
+
+                                    <div className="admin-customer">
+
+                                        <strong>
+
+                                            {order.first_name}
+                                            {" "}
+                                            {order.last_name}
+
+                                        </strong>
+
+                                        <span>
+
+                                            {order.email}
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <div className="admin-order-date">
+
+                                        {new Date(
+                                            order.created_at
+                                        ).toLocaleDateString()}
+
+                                    </div>
+
+
+                                    <div className="admin-payment">
+
+                                        {order.payment_method === "COD"
+                                            ? "Cash on Delivery"
+                                            : "Card Payment"}
+
+                                    </div>
+
+
+                                    <div className="admin-order-total">
+
+                                        Rs. {
+                                            Number(
+                                                order.total
+                                            ).toLocaleString()
+                                        }
+
+                                    </div>
+
+
+                                    <div className="admin-status-control">
+
+                                        <select
+                                            value={order.status}
+                                            disabled={
+                                                updatingOrderId ===
+                                                order.id
+                                            }
+                                            onChange={(event) =>
+
+                                                updateOrderStatus(
+
+                                                    order.id,
+
+                                                    event.target.value
+
+                                                )
+
+                                            }
+                                        >
+
+                                            <option value="PENDING">
+                                                PENDING
+                                            </option>
+
+                                            <option value="CONFIRMED">
+                                                CONFIRMED
+                                            </option>
+
+                                            <option value="PROCESSING">
+                                                PROCESSING
+                                            </option>
+
+                                            <option value="SHIPPED">
+                                                SHIPPED
+                                            </option>
+
+                                            <option value="DELIVERED">
+                                                DELIVERED
+                                            </option>
+
+                                            <option value="CANCELLED">
+                                                CANCELLED
+                                            </option>
+
+                                        </select>
+
+
+                                        {updatingOrderId ===
+                                            order.id && (
+
+                                            <span className="updating-text">
+
+                                                Updating...
+
+                                            </span>
+
+                                        )}
+
+                                    </div>
+
+                                </div>
+
+                            ))}
+
+
+                            {orders.length === 0 && (
+
+                                <div className="admin-no-orders">
+
+                                    <h3>
+                                        No orders found
+                                    </h3>
+
+                                    <p>
+                                        Orders will appear here when customers place them.
+                                    </p>
+
+                                </div>
+
+                            )}
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </main>
 
         </div>
 
