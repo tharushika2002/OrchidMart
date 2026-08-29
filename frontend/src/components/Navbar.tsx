@@ -1,6 +1,7 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 import "../App.css";
 
@@ -8,17 +9,36 @@ import "../App.css";
 function Navbar() {
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     const { cartCount } = useCart();
+
+    const {
+        user,
+        isAuthenticated,
+        logout,
+        loading,
+    } = useAuth();
+
+
+    const handleLogout = () => {
+
+        logout();
+
+        navigate("/products");
+
+    };
+
+
+    const displayName =
+        user?.first_name ||
+        user?.username ||
+        "Account";
 
 
     return (
 
         <header className="navbar">
-
-            {/* =================================================
-                LOGO
-            ================================================= */}
 
             <Link
                 to="/"
@@ -28,7 +48,6 @@ function Navbar() {
                 <span className="navbar-logo-icon">
                     🌸
                 </span>
-
 
                 <div className="navbar-logo-text">
 
@@ -44,10 +63,6 @@ function Navbar() {
 
             </Link>
 
-
-            {/* =================================================
-                NAVIGATION LINKS
-            ================================================= */}
 
             <nav className="navbar-links">
 
@@ -66,7 +81,7 @@ function Navbar() {
                 <Link
                     to="/products"
                     className={
-                        location.pathname === "/products"
+                        location.pathname.startsWith("/products")
                             ? "navbar-link active"
                             : "navbar-link"
                     }
@@ -78,7 +93,7 @@ function Navbar() {
                 <Link
                     to="/orders"
                     className={
-                        location.pathname === "/orders"
+                        location.pathname.startsWith("/orders")
                             ? "navbar-link active"
                             : "navbar-link"
                     }
@@ -89,14 +104,7 @@ function Navbar() {
             </nav>
 
 
-            {/* =================================================
-                ACTIONS
-            ================================================= */}
-
             <div className="navbar-actions">
-
-
-                {/* NOTIFICATIONS */}
 
                 <button
                     className="navbar-icon-button"
@@ -105,11 +113,8 @@ function Navbar() {
                     🔔
 
                     <span className="notification-dot"></span>
-
                 </button>
 
-
-                {/* CART */}
 
                 <Link
                     to="/cart"
@@ -125,9 +130,7 @@ function Navbar() {
                     {cartCount > 0 && (
 
                         <span className="cart-count">
-
                             {cartCount}
-
                         </span>
 
                     )}
@@ -135,14 +138,59 @@ function Navbar() {
                 </Link>
 
 
-                {/* LOGIN */}
+                {!loading && (
 
-                <Link
-                    to="/login"
-                    className="navbar-login-button"
-                >
-                    Login
-                </Link>
+                    isAuthenticated && user ? (
+
+                        <div className="navbar-user-section">
+
+                            <div className="navbar-user">
+
+                                <div className="navbar-user-avatar">
+
+                                    {displayName
+                                        .charAt(0)
+                                        .toUpperCase()}
+
+                                </div>
+
+                                <div className="navbar-user-info">
+
+                                    <span>
+                                        Hello
+                                    </span>
+
+                                    <strong>
+                                        {displayName}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                className="navbar-logout-button"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </button>
+
+                        </div>
+
+                    ) : (
+
+                        <Link
+                            to="/login"
+                            className="navbar-login-button"
+                        >
+                            Login
+                        </Link>
+
+                    )
+
+                )}
 
             </div>
 
