@@ -12,12 +12,13 @@ import AdminOrders from "./pages/AdminOrders";
 import OrderSuccess from "./pages/OrderSuccess";
 import MyOrders from "./pages/MyOrders";
 import OrderDetails from "./pages/OrderDetails";
+import Login from "./pages/Login";
 
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
-import Login from "./pages/Login";
 
 
 function App() {
@@ -30,20 +31,14 @@ function App() {
 
                 <BrowserRouter>
 
-                    {/* =================================================
-                        NAVBAR
-                    ================================================= */}
-
                     <Navbar />
 
 
-                    {/* =================================================
-                        ROUTES
-                    ================================================= */}
-
                     <Routes>
 
-                        {/* HOME */}
+                        {/* =================================================
+                            PUBLIC ROUTES
+                        ================================================= */}
 
                         <Route
                             path="/"
@@ -51,15 +46,11 @@ function App() {
                         />
 
 
-                        {/* PRODUCTS */}
-
                         <Route
                             path="/products"
                             element={<Products />}
                         />
 
-
-                        {/* PRODUCT DETAILS */}
 
                         <Route
                             path="/products/:id"
@@ -67,56 +58,93 @@ function App() {
                         />
 
 
-                        {/* CART */}
-
                         <Route
                             path="/cart"
-                            element={<Cart />}
+                            element={
+                                <ProtectedRoute>
+
+                                    <Cart />
+
+                                </ProtectedRoute>
+                            }
                         />
 
 
-                        {/* CHECKOUT */}
-
-                        <Route
-                            path="/checkout"
-                            element={<Checkout />}
-                        />
-
-
-                        {/* ORDER SUCCESS */}
-
-                        <Route
-                            path="/order-success"
-                            element={<OrderSuccess />}
-                        />
-
-
-                        {/* MY ORDERS */}
-
-                        <Route
-                            path="/orders"
-                            element={<MyOrders />}
-                        />
-
-
-                        {/* ORDER DETAILS */}
-
-                        <Route
-                            path="/orders/:id"
-                            element={<OrderDetails />}
-                        />
-
-
-                        {/* ADMIN ORDERS */}
-
-                        <Route
-                            path="/admin/orders"
-                            element={<AdminOrders />}
-                        />
+                        {/* =================================================
+                            LOGIN
+                        ================================================= */}
 
                         <Route
                             path="/login"
                             element={<Login />}
+                        />
+
+
+                        {/* =================================================
+                            PROTECTED ROUTES
+                        ================================================= */}
+
+                        <Route
+                            path="/checkout"
+                            element={
+                                <ProtectedRoute>
+
+                                    <Checkout />
+
+                                </ProtectedRoute>
+                            }
+                        />
+
+
+                        <Route
+                            path="/order-success"
+                            element={
+                                <ProtectedRoute>
+
+                                    <OrderSuccess />
+
+                                </ProtectedRoute>
+                            }
+                        />
+
+
+                        <Route
+                            path="/orders"
+                            element={
+                                <ProtectedRoute>
+
+                                    <MyOrders />
+
+                                </ProtectedRoute>
+                            }
+                        />
+
+
+                        <Route
+                            path="/orders/:id"
+                            element={
+                                <ProtectedRoute>
+
+                                    <OrderDetails />
+
+                                </ProtectedRoute>
+                            }
+                        />
+
+
+                        {/* =================================================
+                            ADMIN
+                        ================================================= */}
+
+                        <Route
+                            path="/admin/orders"
+                            element={
+                                <ProtectedRoute>
+
+                                    <AdminOrders />
+
+                                </ProtectedRoute>
+                            }
                         />
 
                     </Routes>
