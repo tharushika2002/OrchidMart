@@ -17,6 +17,7 @@ import Navbar from "./components/Navbar";
 
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
+import Login from "./pages/Login";
 
 
 function App() {
@@ -111,6 +112,11 @@ function App() {
                         <Route
                             path="/admin/orders"
                             element={<AdminOrders />}
+                        />
+
+                        <Route
+                            path="/login"
+                            element={<Login />}
                         />
 
                     </Routes>
