@@ -7,6 +7,7 @@ import {
 } from "react";
 
 import type { Product } from "../types/product";
+import { useAuth } from "./AuthContext";
 
 
 export interface CartItem {
@@ -16,15 +17,22 @@ export interface CartItem {
 
 
 interface CartContextType {
+
     cartItems: CartItem[];
 
     addToCart: (product: Product) => void;
 
-    removeFromCart: (productId: number) => void;
+    removeFromCart: (
+        productId: number
+    ) => void;
 
-    increaseQuantity: (productId: number) => void;
+    increaseQuantity: (
+        productId: number
+    ) => void;
 
-    decreaseQuantity: (productId: number) => void;
+    decreaseQuantity: (
+        productId: number
+    ) => void;
 
     clearCart: () => void;
 
@@ -34,9 +42,10 @@ interface CartContextType {
 }
 
 
-const CartContext = createContext<CartContextType | undefined>(
-    undefined
-);
+const CartContext =
+    createContext<CartContextType | undefined>(
+        undefined
+    );
 
 
 interface CartProviderProps {
@@ -48,170 +57,328 @@ export function CartProvider({
     children,
 }: CartProviderProps) {
 
-    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const { user, isAuthenticated } =
+        useAuth();
 
-        const savedCart = localStorage.getItem(
-            "orchidmart_cart"
-        );
 
-        if (!savedCart) {
-            return [];
+    const [cartItems, setCartItems] =
+        useState<CartItem[]>([]);
+
+
+    // =========================================================
+    // GET USER-SPECIFIC CART KEY
+    // =========================================================
+
+    const getCartKey = () => {
+
+        if (!user) {
+            return null;
         }
 
-        try {
-            return JSON.parse(savedCart);
-        } catch {
-            return [];
-        }
-    });
+        return `orchidmart_cart_user_${user.id}`;
+
+    };
 
 
-    // Save cart to localStorage
+    // =========================================================
+    // LOAD USER CART WHEN USER CHANGES
+    // =========================================================
 
     useEffect(() => {
 
+        if (!isAuthenticated || !user) {
+
+            setCartItems([]);
+
+            return;
+
+        }
+
+
+        const cartKey =
+            `orchidmart_cart_user_${user.id}`;
+
+
+        const savedCart =
+            localStorage.getItem(cartKey);
+
+
+        if (!savedCart) {
+
+            setCartItems([]);
+
+            return;
+
+        }
+
+
+        try {
+
+            setCartItems(
+                JSON.parse(savedCart)
+            );
+
+        } catch {
+
+            setCartItems([]);
+
+        }
+
+    }, [
+        user,
+        isAuthenticated,
+    ]);
+
+
+    // =========================================================
+    // SAVE USER CART
+    // =========================================================
+
+    useEffect(() => {
+
+        const cartKey =
+            getCartKey();
+
+
+        if (
+            !isAuthenticated ||
+            !user ||
+            !cartKey
+        ) {
+
+            return;
+
+        }
+
+
         localStorage.setItem(
-            "orchidmart_cart",
+            cartKey,
             JSON.stringify(cartItems)
         );
 
-    }, [cartItems]);
+    }, [
+        cartItems,
+        user,
+        isAuthenticated,
+    ]);
 
 
-    // Add product
+    // =========================================================
+    // ADD PRODUCT
+    // =========================================================
 
-    const addToCart = (product: Product) => {
+    const addToCart = (
+        product: Product
+    ) => {
 
-        setCartItems((currentItems) => {
+        if (!isAuthenticated || !user) {
 
-            const existingItem = currentItems.find(
-                (item) => item.product.id === product.id
+            alert(
+                "Please login before adding items to your cart."
             );
 
+            return;
 
-            if (existingItem) {
+        }
 
-                return currentItems.map((item) =>
-                    item.product.id === product.id
-                        ? {
-                            ...item,
-                            quantity: item.quantity + 1,
-                        }
-                        : item
-                );
+
+        setCartItems(
+            (currentItems) => {
+
+                const existingItem =
+                    currentItems.find(
+                        (item) =>
+                            item.product.id === product.id
+                    );
+
+
+                if (existingItem) {
+
+                    return currentItems.map(
+                        (item) =>
+                            item.product.id ===
+                            product.id
+                                ? {
+                                    ...item,
+                                    quantity:
+                                        item.quantity + 1,
+                                }
+                                : item
+                    );
+
+                }
+
+
+                return [
+                    ...currentItems,
+                    {
+                        product,
+                        quantity: 1,
+                    },
+                ];
+
             }
-
-
-            return [
-                ...currentItems,
-                {
-                    product,
-                    quantity: 1,
-                },
-            ];
-        });
-    };
-
-
-    // Remove product
-
-    const removeFromCart = (productId: number) => {
-
-        setCartItems((currentItems) =>
-            currentItems.filter(
-                (item) => item.product.id !== productId
-            )
         );
+
     };
 
 
-    // Increase quantity
+    // =========================================================
+    // REMOVE PRODUCT
+    // =========================================================
 
-    const increaseQuantity = (productId: number) => {
+    const removeFromCart = (
+        productId: number
+    ) => {
 
-        setCartItems((currentItems) =>
-            currentItems.map((item) =>
-                item.product.id === productId
-                    ? {
-                        ...item,
-                        quantity: item.quantity + 1,
-                    }
-                    : item
-            )
-        );
-    };
-
-
-    // Decrease quantity
-
-    const decreaseQuantity = (productId: number) => {
-
-        setCartItems((currentItems) =>
-            currentItems
-                .map((item) =>
-                    item.product.id === productId
-                        ? {
-                            ...item,
-                            quantity: item.quantity - 1,
-                        }
-                        : item
-                )
-                .filter(
-                    (item) => item.quantity > 0
+        setCartItems(
+            (currentItems) =>
+                currentItems.filter(
+                    (item) =>
+                        item.product.id !==
+                        productId
                 )
         );
+
     };
 
 
-    // Clear cart
+    // =========================================================
+    // INCREASE QUANTITY
+    // =========================================================
+
+    const increaseQuantity = (
+        productId: number
+    ) => {
+
+        setCartItems(
+            (currentItems) =>
+                currentItems.map(
+                    (item) =>
+                        item.product.id ===
+                        productId
+                            ? {
+                                ...item,
+                                quantity:
+                                    item.quantity + 1,
+                            }
+                            : item
+                )
+        );
+
+    };
+
+
+    // =========================================================
+    // DECREASE QUANTITY
+    // =========================================================
+
+    const decreaseQuantity = (
+        productId: number
+    ) => {
+
+        setCartItems(
+            (currentItems) =>
+                currentItems
+                    .map(
+                        (item) =>
+                            item.product.id ===
+                            productId
+                                ? {
+                                    ...item,
+                                    quantity:
+                                        item.quantity - 1,
+                                    }
+                                : item
+                    )
+                    .filter(
+                        (item) =>
+                            item.quantity > 0
+                    )
+        );
+
+    };
+
+
+    // =========================================================
+    // CLEAR CART
+    // =========================================================
 
     const clearCart = () => {
+
         setCartItems([]);
+
     };
 
 
-    // Total quantity
+    // =========================================================
+    // TOTAL QUANTITY
+    // =========================================================
 
-    const cartCount = cartItems.reduce(
-        (total, item) =>
-            total + item.quantity,
-        0
-    );
+    const cartCount =
+        cartItems.reduce(
+            (total, item) =>
+                total +
+                item.quantity,
+            0
+        );
 
 
-    // Total price
+    // =========================================================
+    // TOTAL PRICE
+    // =========================================================
 
-    const cartTotal = cartItems.reduce(
-        (total, item) =>
-            total +
-            Number(item.product.price) *
-            item.quantity,
-        0
-    );
+    const cartTotal =
+        cartItems.reduce(
+            (total, item) =>
+                total +
+                Number(
+                    item.product.price
+                ) *
+                item.quantity,
+            0
+        );
 
 
     return (
+
         <CartContext.Provider
             value={{
                 cartItems,
+
                 addToCart,
+
                 removeFromCart,
+
                 increaseQuantity,
+
                 decreaseQuantity,
+
                 clearCart,
+
                 cartCount,
+
                 cartTotal,
             }}
         >
+
             {children}
+
         </CartContext.Provider>
+
     );
+
 }
 
 
+// =============================================================
+// USE CART
+// =============================================================
+
 export function useCart() {
 
-    const context = useContext(CartContext);
+    const context =
+        useContext(CartContext);
 
 
     if (!context) {
@@ -219,8 +386,10 @@ export function useCart() {
         throw new Error(
             "useCart must be used inside CartProvider"
         );
+
     }
 
 
     return context;
+
 }
